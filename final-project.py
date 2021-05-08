@@ -1,26 +1,29 @@
+#sumber : https://stackoverflow.com/questions/3362600/how-to-send-email-attachments
 import smtplib
-from email.mime.multipart import MIMEMultipart
+from email.mime.multipart import MIMEMultipart        
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
 
+mail = []
+#sumber : https://qastack.id/programming/8856117/how-to-send-email-to-multiple-recipients-using-python-smtplib
 f = open('rec_list.txt', 'r').readlines()
 for n in f :
-    emails = n.rstrip()
-    print(emails)
-
+    emails = n.rstrip(', ')
+    mail.append(emails)
 
 dari = "idhamfurqon@gmail.com"
-password = input("Masukkan Password : ")
-kepada = emails
+password = input("Masukkan password: ")
+#sumber : https://stackoverflow.com/questions/44605843/print-list-elements-in-email-body-list-object-has-no-attribute-encode
+kepada = "".join(mail)
 msg = MIMEMultipart()
 
 msg['From'] = dari
 msg['To'] = kepada
-msg['Subject'] = "Judul Pesan1433"
+msg['Subject'] = "Judul Pesan"
 
 body = "Isi pesan"
-html = """/
+html = """
 <!DOCTYPE html>
 <html>
     <head>
@@ -38,12 +41,11 @@ html = """/
                 </p>
                 </div>
                 </div>
-
         </body>
     </head>
 </html>
 """
-
+#sumber : https://stackoverflow.com/questions/3362600/how-to-send-email-attachments
 msg.attach(MIMEText(body, 'plain'))
 msg.attach(MIMEText(html, 'html'))
 
@@ -64,6 +66,7 @@ server.starttls()
 server.login(dari, password)
 print("Berhasil login")
 text = msg.as_string()
-server.sendmail(dari, emails, text)
-print("Kirim emil berhasil!")
+for a in range(len(mail)):
+    server.sendmail(dari, mail[a], text)
+    print("Kirim emil berhasil!")
 server.quit()
