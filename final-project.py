@@ -4,6 +4,7 @@ from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email import encoders
+import getpass
 
 mail = []
 #sumber : https://qastack.id/programming/8856117/how-to-send-email-to-multiple-recipients-using-python-smtplib
@@ -12,8 +13,9 @@ for n in f :
     emails = n.rstrip(', ')
     mail.append(emails)
 
-dari = "idhamfurqon@gmail.com"
-password = input("Masukkan password: ")
+dari = input("Masukkan Email: ")
+#sumber : https://www.youtube.com/watch?v=zewNh0YB9jA
+password = getpass.getpass('Masukkan Password:')
 #sumber : https://stackoverflow.com/questions/44605843/print-list-elements-in-email-body-list-object-has-no-attribute-encode
 kepada = "".join(mail)
 msg = MIMEMultipart()
@@ -68,5 +70,5 @@ print("Berhasil login")
 text = msg.as_string()
 for a in range(len(mail)):
     server.sendmail(dari, mail[a], text)
-    print("Kirim emil berhasil!")
+    print("Kirim email berhasil!")
 server.quit()
